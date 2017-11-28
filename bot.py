@@ -40,12 +40,12 @@ def main():
                     'article. The main one is at: ' + main_url)
 
             posts_replied_to.append(submission.id)
-            time.sleep(60)
+            # Write our updated list back to the file
+            with open('posts_replied_to.txt', 'w') as f:
+                for post_id in posts_replied_to:
+                    f.write(post_id + '\n')
 
-    # Write our updated list back to the file
-    with open('posts_replied_to.txt', 'w') as f:
-        for post_id in posts_replied_to:
-            f.write(post_id + '\n')
+            time.sleep(60)
 
     print('waiting 10 hours')
     time.sleep(36000)
