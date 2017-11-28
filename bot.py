@@ -32,7 +32,7 @@ def main():
                 submission.reply(
                     'Hi. You linked to the mobile version of this ' +
                     'article. The main one is at: ' + main_url)
-            except APIExeption:
+            except APIException:
                 print('hit rate limit, waiting 10 minutes.')
                 time.sleep(600)
                 submission.reply(
@@ -40,7 +40,7 @@ def main():
                     'article. The main one is at: ' + main_url)
 
             posts_replied_to.append(submission.id)
-            time.sleep(30)
+            time.sleep(60)
 
     # Write our updated list back to the file
     with open('posts_replied_to.txt', 'w') as f:
