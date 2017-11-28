@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import praw
+from praw.exceptions import APIException
 import re
 import os
 import time
@@ -19,7 +20,7 @@ def main():
             posts_replied_to = list(filter(None, posts_replied_to))
 
     subreddit = reddit.subreddit('wikipedia')
-    for submission in subreddit.hot(limit=30):
+    for submission in subreddit.hot(limit=100):
         print(submission.title, submission.id, submission.url)
 
         if submission.url.startswith('https://en.m.wikipedia.org/') and \
@@ -27,9 +28,16 @@ def main():
             slug = submission.url.split('/')[-1]
             main_url = 'https://en.wikipedia.org/wiki/{}'.format(slug)
             print('Bot replying to: ', submission.title)
-            submission.reply(
-                'Hi. You linked to the mobile version of this ' +
-                'article. The main one is at: ' + main_url)
+            try:
+                submission.reply(
+                    'Hi. You linked to the mobile version of this ' +
+                    'article. The main one is at: ' + main_url)
+            except APIExeption:
+                print('hit rate limit, waiting 10 minutes.')
+                time.sleep(600)
+                submission.reply(
+                    'Hi. You linked to the mobile version of this ' +
+                    'article. The main one is at: ' + main_url)
 
             posts_replied_to.append(submission.id)
             time.sleep(30)
@@ -39,6 +47,7 @@ def main():
         for post_id in posts_replied_to:
             f.write(post_id + '\n')
 
+    print('waiting 10 hours')
     time.sleep(36000)
 
 if __name__ == '__main__':
