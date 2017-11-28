@@ -51,4 +51,4 @@ def main():
     time.sleep(36000)
 
 if __name__ == '__main__':
-    main();
+    main()
