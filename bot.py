@@ -51,4 +51,5 @@ def main():
     time.sleep(36000)
 
 if __name__ == '__main__':
-    main()
+    while True:
+        main()
