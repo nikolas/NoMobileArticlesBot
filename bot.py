@@ -5,6 +5,34 @@ import os
 import time
 
 
+def process_submission(submission, posts_replied_to):
+    # print(submission.title, submission.id, submission.url)
+
+    if submission.url.startswith('https://en.m.wikipedia.org/') and \
+       (submission.id not in posts_replied_to):
+        slug = submission.url.split('/')[-1]
+        main_url = 'https://en.wikipedia.org/wiki/{}'.format(slug)
+        print('Bot replying to: ', submission.title)
+        try:
+            submission.reply(
+                'Hi. You linked to the mobile version of this ' +
+                'article. The main one is at: ' + main_url)
+        except APIException:
+            print('hit rate limit, waiting 10 minutes.')
+            time.sleep(600)
+            submission.reply(
+                'Hi. You linked to the mobile version of this ' +
+                'article. The main one is at: ' + main_url)
+
+        posts_replied_to.append(submission.id)
+        # Write our updated list back to the file
+        with open('posts_replied_to.txt', 'w') as f:
+            for post_id in posts_replied_to:
+                f.write(post_id + '\n')
+
+        time.sleep(60)
+
+
 def main():
     reddit = praw.Reddit('NoMobileArticlesBot')
 
@@ -20,34 +48,12 @@ def main():
 
     subreddit = reddit.subreddit('wikipedia')
     for submission in subreddit.hot(limit=100):
-        print(submission.title, submission.id, submission.url)
+        process_submission(submission, posts_replied_to)
 
-        if submission.url.startswith('https://en.m.wikipedia.org/') and \
-           (submission.id not in posts_replied_to):
-            slug = submission.url.split('/')[-1]
-            main_url = 'https://en.wikipedia.org/wiki/{}'.format(slug)
-            print('Bot replying to: ', submission.title)
-            try:
-                submission.reply(
-                    'Hi. You linked to the mobile version of this ' +
-                    'article. The main one is at: ' + main_url)
-            except APIException:
-                print('hit rate limit, waiting 10 minutes.')
-                time.sleep(600)
-                submission.reply(
-                    'Hi. You linked to the mobile version of this ' +
-                    'article. The main one is at: ' + main_url)
-
-            posts_replied_to.append(submission.id)
-            # Write our updated list back to the file
-            with open('posts_replied_to.txt', 'w') as f:
-                for post_id in posts_replied_to:
-                    f.write(post_id + '\n')
-
-            time.sleep(60)
-
-    print('waiting 10 hours')
+    t = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
+    print('waiting 10 hours. Time is {}.'.format(t))
     time.sleep(36000)
+
 
 if __name__ == '__main__':
     while True:
