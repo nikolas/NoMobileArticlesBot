@@ -5,6 +5,12 @@ import os
 import time
 
 
+def harass(submission, main_url):
+    submission.reply(
+        'Hi. You linked to the mobile version of this ' +
+        'article. The main one is at: ' + main_url)
+
+
 def process_submission(submission, posts_replied_to):
     # print(submission.title, submission.id, submission.url)
 
@@ -14,15 +20,11 @@ def process_submission(submission, posts_replied_to):
         main_url = 'https://en.wikipedia.org/wiki/{}'.format(slug)
         print('Bot replying to: ', submission.title)
         try:
-            submission.reply(
-                'Hi. You linked to the mobile version of this ' +
-                'article. The main one is at: ' + main_url)
+            harass(submission, main_url)
         except APIException:
             print('hit rate limit, waiting 10 minutes.')
             time.sleep(600)
-            submission.reply(
-                'Hi. You linked to the mobile version of this ' +
-                'article. The main one is at: ' + main_url)
+            harass(submission, main_url)
 
         posts_replied_to.append(submission.id)
         # Write our updated list back to the file
