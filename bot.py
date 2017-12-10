@@ -53,8 +53,8 @@ def main():
         process_submission(submission, posts_replied_to)
 
     t = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
-    print('waiting 10 hours. Time is {}.'.format(t))
-    time.sleep(36000)
+    print('waiting 3 hours. Time is {}.'.format(t))
+    time.sleep(3600 * 3)
 
 
 if __name__ == '__main__':
