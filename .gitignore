@@ -56,3 +56,4 @@ target/
 config_bot.py
 posts_replied_to.txt
 praw.ini
+ve/
