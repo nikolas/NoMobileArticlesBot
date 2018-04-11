@@ -34,7 +34,7 @@ def process_submission(submission, posts_replied_to):
 
     if submission.url.startswith('https://m.facebook.com/') and \
        (submission.id not in posts_replied_to):
-        slug = submission.url.split('/')[-1]
+        slug = '/'.join(submission.url.split('/')[3:])
         main_url = 'https://facebook.com/{}'.format(slug)
         print('Bot replying to: ', submission.title)
         try:
