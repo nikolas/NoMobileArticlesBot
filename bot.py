@@ -48,7 +48,7 @@ def process_submission(submission, posts_replied_to):
         # Write our updated list back to the file
         with open('posts_replied_to.txt', 'w') as f:
             for post_id in posts_replied_to:
-                f.write(post_id + '\n')                
+                f.write(post_id + '\n')
 
         time.sleep(60)
 
@@ -70,9 +70,17 @@ def main():
     for submission in subreddit.hot(limit=100):
         process_submission(submission, posts_replied_to)
 
+    subreddit = reddit.subreddit('GifRecipes')
+    for submission in subreddit.hot(limit=100):
+        process_submission(submission, posts_replied_to)
+
     subreddit = reddit.subreddit('ShittyGifRecipes')
     for submission in subreddit.hot(limit=100):
-        process_submission(submission, posts_replied_to)        
+        process_submission(submission, posts_replied_to)
+
+    subreddit = reddit.subreddit('all')
+    for submission in subreddit.hot(limit=100):
+        process_submission(submission, posts_replied_to)
 
     t = time.strftime('%a, %d %b %Y %H:%M:%S', time.localtime())
     print('waiting 3 hours. Time is {}.'.format(t))
