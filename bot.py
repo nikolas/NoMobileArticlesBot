@@ -1,6 +1,5 @@
 import praw
 from praw.exceptions import APIException
-import re
 import os
 import time
 
