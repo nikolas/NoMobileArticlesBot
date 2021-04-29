@@ -1,0 +1,14 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: praw
+    versions:
+    - 7.1.0
+    - 7.1.1
+    - 7.1.2
+    - 7.1.4
